@@ -1,0 +1,14 @@
+[
+  {
+    "id": "fastapi-001",
+    "question": "Что такое BackgroundTasks в FastAPI?",
+    "language": "ru",
+    "expected_sources": ["fastapi"]
+  },
+  {
+    "id": "rq-001",
+    "question": "Как RQ распределяет задачи между workers?",
+    "language": "ru",
+    "expected_sources": ["rq"]
+  }
+]
