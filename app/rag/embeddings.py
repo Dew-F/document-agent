@@ -1,6 +1,9 @@
 import os
 
 import httpx
+from sqlmodel import Session, select
+
+from app.models import DocumentChunk
 
 OLLAMA_BASE_URL = os.getenv(
     "OLLAMA_BASE_URL",
@@ -28,3 +31,18 @@ def create_embedding(text: str) -> list[float]:
     data = response.json()
 
     return data["embeddings"][0]
+
+
+def embed_document(session: Session, document_id: int) -> None:
+    statement = (
+        select(DocumentChunk)
+        .where(DocumentChunk.document_id == document_id)
+        .order_by(DocumentChunk.chunk_index)
+    )
+
+    chunks = session.exec(statement).all()
+
+    for chunk in chunks:
+        chunk.embedding = create_embedding(chunk.content)
+
+    session.commit()
